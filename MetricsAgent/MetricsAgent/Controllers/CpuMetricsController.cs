@@ -10,7 +10,7 @@ using AutoMapper;
 
 namespace MetricsAgent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace MetricsAgent.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
         {
 
@@ -35,7 +35,7 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             // задаем конфигурацию для мапера. Первый обобщенный параметр -- тип объекта источника, второй -- тип объекта в который перетекут данные из источника
@@ -51,6 +51,20 @@ namespace MetricsAgent.Controllers
             {
                 response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
             }
+
+            return Ok(response);
+        }
+
+        [HttpGet("getbyid/{id}")]
+        public IActionResult GetById([FromRoute] int id) // FromRoute
+        {
+            // задаем конфигурацию для мапера. Первый обобщенный параметр -- тип объекта источника, второй -- тип объекта в который перетекут данные из источника
+
+            CpuMetric metric = repository.GetById(id);
+
+            var response = new CpuMetricDto();
+
+            response = mapper.Map<CpuMetricDto>(metric);
 
             return Ok(response);
         }
@@ -73,13 +87,31 @@ namespace MetricsAgent.Controllers
             return Ok(response);
         }
 
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        [HttpGet("agent/{agentId}/from/{_fromTime}/to/{_toTime}")]
         public IActionResult GetMetricsFromAgent(
             [FromRoute] int agentId, 
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime)
+            [FromRoute] long _fromTime, 
+            [FromRoute] long _toTime)
         {
-            return Ok();
+            var respond = new TimePeriod()
+            {
+                fromTime = _fromTime,
+                toTime = _toTime
+            };
+
+            IList<CpuMetric> metrics = repository.GetByTimePeriod(respond);
+
+            var response = new AllCpuMetricsResponse()
+            {
+                Metrics = new List<CpuMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]

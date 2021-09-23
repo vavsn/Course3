@@ -87,8 +87,10 @@ namespace MetricsAgent.DAL
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.QuerySingle<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics WHERE id=@id",
+                return connection.QueryFirstOrDefault<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics WHERE id=@id",
                     new { id = id });
+                //return connection.QuerySingle<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics WHERE id=@id",
+                //    new { id = id });
             }
         }
         public IList<CpuMetric> GetByTimePeriod(TimePeriod respond)
@@ -99,8 +101,8 @@ namespace MetricsAgent.DAL
                 return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
                     new
                     {
-                        fromTime = respond.fromTime,
-                        toTime = respond.toTime
+                        fromTime = TimeSpan.FromSeconds(respond.fromTime),
+                        toTime = TimeSpan.FromSeconds(respond.toTime)
                     }).ToList();
             }
         }
