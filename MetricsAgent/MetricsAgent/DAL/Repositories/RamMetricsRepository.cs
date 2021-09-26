@@ -23,7 +23,7 @@ namespace MetricsAgent.DAL
         public RamMetricsRepository()
         {
             // добавляем парсилку типа TimeSpan в качестве подсказки для SQLite
-            SqlMapper.AddTypeHandler(new TimeSpanHandler());
+            //SqlMapper.AddTypeHandler(new TimeSpanHandler());
         }
 
         public void Create(RamMetric item)
@@ -40,7 +40,7 @@ namespace MetricsAgent.DAL
                         value = item.Value,
 
                         // записываем в поле time количество секунд
-                        time = item.Time.TotalSeconds
+                        time = item.Time
                     });
             }
         }
@@ -65,7 +65,7 @@ namespace MetricsAgent.DAL
                     new
                     {
                         value = item.Value,
-                        time = item.Time.TotalSeconds,
+                        time = item.Time,
                         id = item.Id
                     });
             }
@@ -78,7 +78,7 @@ namespace MetricsAgent.DAL
                 // читаем при помощи Query и в шаблон подставляем тип данных
                 // объект которого Dapper сам и заполнит его поля
                 // в соответсвии с названиями колонок
-                return connection.Query<RamMetric>("SELECT Id, Time, Value FROM rammetrics").ToList();
+                return connection.Query<RamMetric>("SELECT Id, Value, Time FROM rammetrics").ToList();
             }
         }
 

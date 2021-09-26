@@ -20,11 +20,11 @@ namespace MetricsAgent.DAL.Migrations
                     Create.Table(arrDB[i])
                         .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                         .WithColumn("Value").AsInt32()
-                        .WithColumn("Time").AsInt64();
+                        .WithColumn("Time").AsDateTime();
                     for (int j = 1; j <= 6; j++)
                     {
                         Insert.IntoTable(arrDB[i])
-                          .Row(new { Id = j, Value = 100 * j, Time = j });
+                          .Row(new { Id = j, Value = 100 * j, Time = DateTime.Now });
                     }
                 }
             }

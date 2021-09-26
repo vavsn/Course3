@@ -8,7 +8,7 @@ namespace MetricsAgent.DAL.Models
 
         public int Value { get; set; }
 
-        public TimeSpan Time { get; set; }
+        public DateTime Time { get; set; }
     }
 
 }

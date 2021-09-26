@@ -23,7 +23,7 @@ namespace MetricsAgent.DAL
         public NetworkMetricsRepository()
         {
             // добавляем парсилку типа TimeSpan в качестве подсказки для SQLite
-            SqlMapper.AddTypeHandler(new TimeSpanHandler());
+            //SqlMapper.AddTypeHandler(new TimeSpanHandler());
         }
         public void Create(NetworkMetric item)
         {
@@ -39,7 +39,7 @@ namespace MetricsAgent.DAL
                         value = item.Value,
 
                         // записываем в поле time количество секунд
-                        time = item.Time.TotalSeconds
+                        time = item.Time
                     });
             }
         }
@@ -64,7 +64,7 @@ namespace MetricsAgent.DAL
                     new
                     {
                         value = item.Value,
-                        time = item.Time.TotalSeconds,
+                        time = item.Time,
                         id = item.Id
                     });
             }

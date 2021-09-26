@@ -24,7 +24,7 @@ namespace MetricsAgent.DAL
         public CpuMetricsRepository()
         {
             // добавляем парсилку типа TimeSpan в качестве подсказки для SQLite
-            SqlMapper.AddTypeHandler(new TimeSpanHandler());
+            //SqlMapper.AddTypeHandler(new TimeSpanHandler());
         }
 
         public void Create(CpuMetric item)
@@ -41,7 +41,7 @@ namespace MetricsAgent.DAL
                         value = item.Value,
 
                         // записываем в поле time количество секунд
-                        time = item.Time.TotalSeconds
+                        time = item.Time
                     });
             }
         }
@@ -66,7 +66,7 @@ namespace MetricsAgent.DAL
                     new
                     {
                         value = item.Value,
-                        time = item.Time.TotalSeconds,
+                        time = item.Time,
                         id = item.Id
                     });
             }
@@ -79,7 +79,7 @@ namespace MetricsAgent.DAL
                 // читаем при помощи Query и в шаблон подставляем тип данных
                 // объект которого Dapper сам и заполнит его поля
                 // в соответсвии с названиями колонок
-                return connection.Query<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics").ToList();
+                return connection.Query<CpuMetric>("SELECT Id, Value, Time FROM cpumetrics").ToList();
             }
         }
 
@@ -101,8 +101,8 @@ namespace MetricsAgent.DAL
                 return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime",
                     new
                     {
-                        fromTime = TimeSpan.FromSeconds(respond.fromTime),
-                        toTime = TimeSpan.FromSeconds(respond.toTime)
+                        fromTime = respond.fromTime,
+                        toTime = respond.toTime
                     }).ToList();
             }
         }

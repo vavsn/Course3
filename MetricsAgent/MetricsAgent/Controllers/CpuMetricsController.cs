@@ -28,7 +28,7 @@ namespace MetricsAgent.Controllers
 
             repository.Create(new CpuMetric
             {
-                Time = TimeSpan.FromSeconds(request.Time),
+                Time = request.Time,
                 Value = request.Value
             });
 
@@ -90,8 +90,8 @@ namespace MetricsAgent.Controllers
         [HttpGet("agent/{agentId}/from/{_fromTime}/to/{_toTime}")]
         public IActionResult GetMetricsFromAgent(
             [FromRoute] int agentId, 
-            [FromRoute] long _fromTime, 
-            [FromRoute] long _toTime)
+            [FromRoute] DateTime _fromTime, 
+            [FromRoute] DateTime _toTime)
         {
             var respond = new TimePeriod()
             {
@@ -116,8 +116,8 @@ namespace MetricsAgent.Controllers
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster(
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime)
+            [FromRoute] DateTime fromTime, 
+            [FromRoute] DateTime toTime)
         {
             return Ok();
         }
@@ -198,7 +198,7 @@ namespace MetricsAgent.Controllers
                             {
                                 Id = reader.GetInt32(0), // читаем данные полученные из базы данных
                                 Value = reader.GetInt32(1), // преобразуя к целочисленному типу
-                                Time = reader.GetInt64(2)
+                                Time = reader.GetDateTime(2)
                             };
                             // увеличиваем значение счетчика
                             counter++;

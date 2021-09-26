@@ -9,7 +9,7 @@ using AutoMapper;
 
 namespace MetricsAgent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class HddMetricsController : ControllerBase
     {
@@ -28,14 +28,14 @@ namespace MetricsAgent.Controllers
 
             repository.Create(new HddMetric
             {
-                Time = TimeSpan.FromSeconds(request.Time),
+                Time = request.Time,
                 Value = request.Value
             });
 
             return Ok();
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             // задаем конфигурацию для мапера. Первый обобщенный параметр -- тип объекта источника, второй -- тип объекта в который перетекут данные из источника

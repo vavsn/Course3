@@ -8,6 +8,6 @@ namespace MetricsManager.Controllers
 
         public int Value { get; set; }
 
-        public long Time { get; set; }
+        public DateTime Time { get; set; }
     }
 }

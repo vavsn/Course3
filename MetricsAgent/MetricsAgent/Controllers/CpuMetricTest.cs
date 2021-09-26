@@ -1,4 +1,6 @@
-﻿namespace MetricsAgent.Controllers
+﻿using System;
+
+namespace MetricsAgent.Controllers
 {
     internal class CpuMetricTest
     {
@@ -6,6 +8,6 @@
 
         public int Value { get; set; }
 
-        public long Time { get; set; }
+        public DateTime Time { get; set; }
     }
 }

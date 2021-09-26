@@ -3,17 +3,14 @@ using MetricsAgent.DAL;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.Request;
 using MetricsAgent.Response;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsAgent.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
@@ -31,14 +28,14 @@ namespace MetricsAgent.Controllers
 
             repository.Create(new RamMetric
             {
-                Time = TimeSpan.FromSeconds(request.Time),
+                Time = request.Time,
                 Value = request.Value
             });
 
             return Ok();
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             // задаем конфигурацию для мапера. Первый обобщенный параметр -- тип объекта источника, второй -- тип объекта в который перетекут данные из источника

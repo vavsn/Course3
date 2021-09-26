@@ -5,13 +5,14 @@ namespace MetricsManager.Responses
 {
     public class AllRamMetricsResponse
     {
-        public List<RamMetricsDto> Metrics { get; set; }
+        public List<RamMetricDto> Metrics { get; set; }
     }
-
-    public class RamMetricsDto
+    
+    public class RamMetricDto
     {
-        public TimeSpan Time { get; set; }
+        public DateTime Time { get; set; }
         public int Value { get; set; }
         public int Id { get; set; }
+
     }
 }
